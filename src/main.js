@@ -57,24 +57,28 @@ async function analyseData() {
     for (let i = 0; i < gamesArray.length; i++) {
         let body = gamesArray[i].games;
         for (let j = 0; j < body.length; j++) {
-            try {
-                let startDate = body[j].pgn.split('[Date "')[1].split('"]')[0];
-                let endDate = body[j].pgn.split('[EndDate "')[1].split('"]')[0];
-                let startTime = body[j].pgn.split('[StartTime "')[1].split('"]')[0];
-                let endTime = body[j].pgn.split('[EndTime "')[1].split('"]')[0];
+            if (body[j].time_class == 'blitz' || body[j].time_class == 'bullet' || body[j].time_class == 'rapid') {
+                try {
+                    let startDate = body[j].pgn.split('[Date "')[1].split('"]')[0];
+                    let endDate = body[j].pgn.split('[EndDate "')[1].split('"]')[0];
+                    let startTime = body[j].pgn.split('[StartTime "')[1].split('"]')[0];
+                    let endTime = body[j].pgn.split('[EndTime "')[1].split('"]')[0];
 
-                let startDateTime = getDateByDate(startDate + " " + startTime);
-                let endDateTime = getDateByDate(endDate + " " + endTime);
-                secoundsPlayed += (Math.round(endDateTime.getTime() / 1000) - Math.round(startDateTime.getTime() / 1000));
-                gamesPlayed++;
-            } catch (error) { uncountedGames++; }
+                    let startDateTime = getDateByDate(startDate + " " + startTime);
+                    let endDateTime = getDateByDate(endDate + " " + endTime);
+                    secoundsPlayed += (Math.round(endDateTime.getTime() / 1000) - Math.round(startDateTime.getTime() / 1000));
+                    gamesPlayed++;
+                } catch (error) { uncountedGames++; }
+            } else {
+                uncountedGames++;
+            }
         }
     }
 
     console.log(username + " started playing in (MONTH/YEAR): " + (accountCreationDate.getMonth() + 1) + "." + accountCreationDate.getFullYear());
     console.log(username + " played " + (Math.round(secoundsPlayed / (60 * 60))) + " hours");
-    console.log(username + " also played in " + gamesPlayed + " chess matches\n");
-    console.log("Couldn't analyse " + uncountedGames + " games due exceptions...");
+    console.log(username + " also played in " + gamesPlayed + " chess matches");
+    console.log("Couldn't analyse " + uncountedGames + " games. Those were too long or could not been load...\n");
     rl.close();
 }
 
