@@ -1,0 +1,22 @@
+{
+  "name": "chess-com-playtime",
+  "version": "1.0.0",
+  "description": "This is an application to calculate hours/minutes played on a Chess website.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yato361/chess-com-playtime.git"
+  },
+  "author": "AEugh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yato361/chess-com-playtime/issues"
+  },
+  "homepage": "https://github.com/Yato361/chess-com-playtime#readme",
+  "dependencies": {
+    "chess-web-api": "^1.1.0"
+  }
+}
