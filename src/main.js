@@ -4,7 +4,7 @@ const { start } = require('repl');
 var chessAPI = new ChessWebAPI();
 var accountCreationDate;
 var gamesArray = new Array();
-var username = "gminghd";
+var username = "";
 
 chessAPI.getPlayer(username)
     .then(async function(response) {
@@ -21,15 +21,18 @@ async function getPlayerDataAndPutIntoArray() {
     let currentMonth = new Date().getMonth() + 1;
     console.log("Fetching data of account " + username + "... ");
     while (iterativeYear != currentYear || iterativeMonth != currentMonth + 1) {
-        let response = await chessAPI.getPlayerCompleteMonthlyArchives(username, iterativeYear, iterativeMonth);
-        gamesArray.push(response.body);
-        console.log("Fetched data of year->" + iterativeYear + " month->" + iterativeMonth);
+        try {
+            let response = await chessAPI.getPlayerCompleteMonthlyArchives(username, iterativeYear, iterativeMonth);
+            gamesArray.push(response.body);
+            console.log("Fetched data of year->" + iterativeYear + " month->" + iterativeMonth);
+        } catch (error) {}
         if (iterativeMonth == 12 && currentYear > iterativeYear) {
             iterativeMonth = 1;
             iterativeYear++;
         } else {
             iterativeMonth++;
         }
+
     }
     console.log("Fetching completed. Analysing...\n");
     await analyseData();
