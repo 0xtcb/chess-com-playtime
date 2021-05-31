@@ -1,18 +1,29 @@
+const readline = require('readline');
 var fs = require('fs');
 var ChessWebAPI = require('chess-web-api');
 const { start } = require('repl');
 var chessAPI = new ChessWebAPI();
 var accountCreationDate;
 var gamesArray = new Array();
-var username = "";
+var username;
 
-chessAPI.getPlayer(username)
-    .then(async function(response) {
-        accountCreationDate = new Date(response.body.joined * 1000);
-        await getPlayerDataAndPutIntoArray();
-    }, function(err) {
-        console.error(err);
-    });
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+rl.question('Username: ', (answer) => {
+    username = answer;
+    chessAPI.getPlayer(username)
+        .then(async function(response) {
+            accountCreationDate = new Date(response.body.joined * 1000);
+            await getPlayerDataAndPutIntoArray();
+        }, function(err) {
+            console.error(err);
+        });
+});
+
+
 
 async function getPlayerDataAndPutIntoArray() {
     let iterativeYear = accountCreationDate.getFullYear();
@@ -63,7 +74,8 @@ async function analyseData() {
     console.log(username + " started playing in (MONTH/YEAR): " + (accountCreationDate.getMonth() + 1) + "." + accountCreationDate.getFullYear());
     console.log(username + " played " + (Math.round(secoundsPlayed / (60 * 60))) + " hours");
     console.log(username + " also played in " + gamesPlayed + " chess matches\n");
-    console.log("Couldn't analyse " + uncountedGames + " games due exceptions...")
+    console.log("Couldn't analyse " + uncountedGames + " games due exceptions...");
+    rl.close();
 }
 
 //2021.05.29 12:11:25

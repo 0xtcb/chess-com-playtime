@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Yato361/chess-com-playtime#readme",
   "dependencies": {
-    "chess-web-api": "^1.1.0"
+    "chess-web-api": "^1.1.0",
+    "readline": "^1.3.0"
   }
 }
